@@ -1,19 +1,21 @@
 <template>
   <div id="app">
     <h1>Todoリスト</h1>
-    <FilterTodoButtons @onSelect="filterTodos"></FilterTodoButtons>
+    <FilterTodoButtons @filterTodos="changeState"></FilterTodoButtons>
     <TodosTable
-    :todos="todos"
+    :todos="filterTodos"
     @deleteTodo="deleteTodo"
     @editTodo="editTodo"
+    @changeTodoState="changeTodoState"
     >
     </TodosTable>
     <AddTodo
     @addTodo="addTodo">
     </AddTodo>
     <UpdateTodo
+    v-if="showUpdateForm"
     :showUpdateForm="showUpdateForm"
-    :updateTodos="updateTodos"
+    :updateTodosName="updateTodos.name"
     @accept="updateTodo"
     @onBack="updateBack"
     ></UpdateTodo>
@@ -42,8 +44,19 @@ export default {
         name: '',
         state: false
       },
-      savedTodos: [],
-      showUpdateForm: false
+      showUpdateForm: false,
+      currentTodoState: 'all'
+    }
+  },
+  computed: {
+    filterTodos: function (targetTodoState) {
+      if (this.currentTodoState === 'all') {
+        return this.todos
+      } else if (this.currentTodoState === 'working') {
+        return this.todos.filter(todo => !todo.state)
+      } else {
+        return this.todos.filter(todo => todo.state)
+      }
     }
   },
   methods: {
@@ -54,8 +67,8 @@ export default {
         state: todoState
       })
     },
-    deleteTodo: function (targetTodo) {
-      this.todos = this.todos.filter(todo => todo.id !== targetTodo.id)
+    deleteTodo: function (targetTodoId) {
+      this.todos = this.todos.filter(todo => todo.id !== targetTodoId)
       // todosの数が0個になった場合はshowUpdateFormを消す
       if (this.todos.length === 0) {
         this.showUpdateForm = false
@@ -67,7 +80,6 @@ export default {
         name: targetTodo.name,
         state: targetTodo.state
       }
-
       if (this.showUpdateForm) {
         this.showUpdateForm = false
       } else {
@@ -75,11 +87,10 @@ export default {
       }
     },
     updateTodo: function (updateTodoName) {
-      this.todos = this.todos.filter(todo => {
-        if (updateTodoName.id === todo.id) {
-          todo.name = updateTodoName.name
+      this.todos.forEach(todo => {
+        if (this.updateTodos.id === todo.id) {
+          todo.name = updateTodoName
         }
-        return this.todos
       })
     },
     // 戻るボタン
@@ -91,16 +102,17 @@ export default {
       }
       this.showUpdateForm = false
     },
-    filterTodos: function (state) {
-      this.todos = this.todos.filter(todo => todo.state === state)
+    changeState: function (targetStateValue) {
+      this.currentTodoState = targetStateValue
+    },
+    changeTodoState: function (targetTodoId) {
+      this.todos.forEach(todo => {
+        if (targetTodoId === todo.id) {
+          todo.state = !todo.state
+        }
+      })
     }
   }
-  // computed: {
-  //   filterTodos: function (state) {
-  //     return this.todos.filter(todo => todo.state === state.textContent)
-  //   }
-  // }
-
 }
 </script>
 
