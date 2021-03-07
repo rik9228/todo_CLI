@@ -2,12 +2,12 @@
 
 <!-- 作りかけ -->
 <div class="container">
-  <input type="radio" id="running" name="progress">
-  <label for="running" @click="onSelect" data-value="">作業中</label>
-  <input type="radio" id="completed" name="progress">
-  <label for="completed" @click="onSelect" data-value="true">完了</label>
-  <input type="radio" id="all" name="progress">
-  <label for="all" @click="onSelect">すべて</label>
+  <input type="radio" id="running" name="progress" value="working" @click="onSelect">
+  <label for="running">作業中</label>
+  <input type="radio" id="completed" name="progress" value="completed" @click="onSelect">
+  <label for="completed">完了</label>
+  <input type="radio" id="all" name="progress" value="all" @click="onSelect" checked>
+  <label for="all">すべて</label>
 </div>
 
 </template>
@@ -18,7 +18,7 @@ export default {
 
   methods: {
     onSelect: function (e) {
-      this.$emit('onSelect', Boolean(e.target.dataset.value))
+      this.$emit('filterTodos', e.target.value)
     }
   }
 }
