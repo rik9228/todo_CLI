@@ -14,9 +14,9 @@
       v-for="todo in todos"
       :key="todo.id"
       :todo="todo"
-      @onSubmit="onSubmit(todo)"
-      @onEdit="onEdit(todo, true)"
-      @onChange="onChange">
+      @onSubmit="onSubmit"
+      @onChange="onChange"
+      @onEdit="onEdit">
       </TodoItem>
     </tbody>
   </table>
@@ -32,21 +32,17 @@ export default {
     todos: {
       // 必須
       require: true
-    },
-    updateTodos: {
-      // 必須
-      require: true
     }
   },
   methods: {
-    onSubmit: function (targetTodo) {
-      this.$emit('deleteTodo', targetTodo)
+    onSubmit: function (targetTodoId) {
+      this.$emit('deleteTodo', targetTodoId)
     },
     onEdit: function (targetTodo) {
       this.$emit('editTodo', targetTodo)
     },
-    onChange: function () {
-      this.$emit('onChange')
+    onChange: function (targetTodoId) {
+      this.$emit('changeTodoState', targetTodoId)
     }
   },
 
