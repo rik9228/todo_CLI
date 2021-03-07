@@ -28,7 +28,7 @@ export default {
       this.$emit('onEdit', this.todo)
     },
     onChange: function () {
-      this.todo.state = !this.todo.state
+      this.$emit('onChange', this.todo.id)
     }
   },
   computed: {
