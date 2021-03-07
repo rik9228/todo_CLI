@@ -1,9 +1,9 @@
 <template>
 
- <div class="container" v-if="showUpdateForm">
+ <div class="container">
    <p>Todoを編集する</p>
-   <input type="text" v-model="updateTodos.name">
-   <button @click="onSubmit(updateTodos)">確定</button>
+   <input type="text" v-model="value">
+   <button @click="onSubmit">確定</button>
    <button @click="onReturn">戻る</button>
  </div>
 
@@ -13,17 +13,18 @@
 export default {
   name: 'UpdateTodo',
   props: {
-    // 親で定義したshowUPdateFormを受け取る
-    showUpdateForm: {
-      require: true
-    },
-    updateTodos: {
+    updateTodosName: {
       require: true
     }
   },
+  data: function () {
+    return {
+      value: ''
+    }
+  },
   methods: {
-    onSubmit: function (updateTodoName) {
-      this.$emit('accept', updateTodoName)
+    onSubmit: function () {
+      this.$emit('accept', this.value)
     },
     onReturn: function () {
       this.$emit('onBack')
