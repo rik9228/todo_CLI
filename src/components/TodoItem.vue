@@ -2,7 +2,7 @@
   <tr>
     <td>{{ todo.id }}</td>
     <td>{{ todo.name }}</td>
-    <td><button @click="changeState">{{ this.completedText }}</button></td>
+    <td><button @click="onChange">{{ this.completedText }}</button></td>
     <td><button @click="onEdit">編集</button></td>
     <td><button @click="onSubmit">削除</button></td>
   </tr>
@@ -18,16 +18,16 @@ export default {
   methods: {
     // this.propsネームでpropsデータにアクセスができる
     onSubmit: function () {
-      const res = confirm('項目を削除しますか？')
+      const res = confirm(`項目ID：${this.todo.id}を削除しますか？`)
 
       if (res) {
-        this.$emit('onSubmit', this.todo)
+        this.$emit('onSubmit', this.todo.id)
       }
     },
     onEdit: function () {
       this.$emit('onEdit', this.todo)
     },
-    changeState: function () {
+    onChange: function () {
       this.todo.state = !this.todo.state
     }
   },
