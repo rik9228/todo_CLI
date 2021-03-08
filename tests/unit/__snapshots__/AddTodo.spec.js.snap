@@ -1,0 +1,3 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`AddTodo.vue snapshot 1`] = `<div class="addForm"><input type="text" class="addForm__form"> <button class="addForm__button">追加</button></div>`;
